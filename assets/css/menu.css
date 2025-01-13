@@ -1,0 +1,120 @@
+﻿body {
+    background-color: white;/*#FFFADD*/
+}
+
+.labelHeader{
+    font-size:10pt;
+    font-weight:bold;
+    color:#00048f;
+    /*text-shadow: 2px 2px #2d62b4;*/
+}
+
+.labelDescription{
+    font-style:italic;
+    font-size:10pt;
+    font-weight:bold;
+    color:white;
+}
+
+fieldset.scheduler-border {
+    border: 2px dotted #ddd !important;
+    padding: 0 0 1em 1em !important;
+    margin: 0 0 1.2em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+    box-shadow:  0px 0px 0px 0px #000;
+}
+
+.textLegend {
+    font-size: 12pt !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:auto;
+    padding:0 10px;
+    border-bottom:none;
+    color: coral;
+    text-shadow: -1px 0 #5f5e5e, 0 1px #5f5e5e, 1px 0 #5f5e5e, 0 -1px #5f5e5e;
+}
+
+.tableImgStyle {
+    padding:20px; 
+    cursor:pointer;
+}
+
+.tableTxtStyle{
+    padding-left:25px;
+    font-weight:bold;
+}
+
+.btnOrder{
+    position:sticky;float:right;bottom:20px;
+}
+
+.shaky-btn {
+    cursor: pointer;
+}
+
+.shaky-btn:focus {
+    transform: skewX(-10deg);
+    animation: shake 0.4s ease-out;
+    border: 1px solid #77b4fe;
+    font-weight: bold;
+    box-shadow: 0 0 5px 10px #b9e7ff;
+}
+
+/* Use the keyframes for defining the animation */
+@keyframes shake {
+    0%   { transform: skewX(-10deg); }
+    25%  { transform: skewX(10deg);  }
+    50%  { transform: skewX(-10deg); }
+    75%  { transform: skewX(10deg);  }
+    100% { transform: skewX(-10deg); }
+}
+
+.imgLogo
+{   
+    content:url(../images/PS1.png); 
+    animation:DynamicBackground 30s ease-in;
+    animation-iteration-count:infinite;
+    -webkit-animation:DynamicBackground 30s ease-in;
+    -webkit-animation-iteration-count:infinite;
+    -moz-animation:DynamicBackground 30s ease-in;
+    -moz-animation-iteration-count:infinite;
+    height:150px;
+    width:200px;
+}
+
+@keyframes DynamicBackground
+{
+    0%   {content: url(../images/PS1.png);}
+    25%  {content: url(../images/PS2.png);}
+    50%  {content: url(../images/PS3.png);}
+    75%  {content: url(../images/PS4.png);}
+    100% {content: url(../images/PS6.png);}
+}
+
+@-webkit-keyframes DynamicBackground
+{
+    0%   {content: url(../images/PS1.png);}
+    25%  {content: url(../images/PS2.png);}
+    50%  {content: url(../images/PS3.png);}
+    75%  {content: url(../images/PS4.png);}
+    100% {content: url(../images/PS6.png);}
+}
+
+@-moz-keyframes DynamicBackground
+{
+    0%   {content: url(../images/PS1.png);}
+    25%  {content: url(../images/PS2.png);}
+    50%  {content: url(../images/PS3.png);}
+    75%  {content: url(../images/PS4.png);}
+    100% {content: url(../images/PS6.png);}
+}
+
+@-ms-keyframes DynamicBackground
+{
+    0%   {content: url(../images/PS1.png);}
+    25%  {content: url(../images/PS2.png);}
+    50%  {content: url(../images/PS3.png);}
+    75%  {content: url(../images/PS4.png);}
+    100% {content: url(../images/PS6.png);}
+}
