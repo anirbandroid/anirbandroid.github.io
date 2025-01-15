@@ -103,7 +103,7 @@ fieldset.scheduler-border {
     -moz-animation-iteration-count:infinite;*/
     height:80px;
     width:80px;
-    border-radius: 80px;
+    border-radius: 80px !important;
     padding-top:4px;
 }
 
@@ -142,3 +142,81 @@ fieldset.scheduler-border {
     75%  {content: url(../images/PS4.png);}
     100% {content: url(../images/PS6.png);}
 }
+
+.tableIcon{
+    color: #942de9; font-size:24pt;
+}
+
+.blinkSlow {
+    font-size:26pt !important;
+    color: #f21414 !important;
+    -moz-animation: blink normal 2s infinite ease-in-out; /* Firefox */
+    -webkit-animation: blink normal 2s infinite ease-in-out; /* Webkit */
+    -ms-animation: blink normal 2s infinite ease-in-out; /* IE */
+    animation: blink normal 2s infinite ease-in-out; /* Opera and prob css3 final iteration */
+}
+
+/* Firefox old*/
+@-moz-keyframes blink {
+    0% {
+        opacity:1;
+    }
+    50% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
+} 
+
+@-webkit-keyframes blink {
+    0% {
+        opacity:1;
+    }
+    50% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
+}
+/* IE */
+@-ms-keyframes blink {
+    0% {
+        opacity:1;
+    }
+    50% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
+} 
+/* Opera and prob css3 final iteration */
+@keyframes blink {
+    0% {
+        opacity:1;
+    }
+    50% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
+} 
+
+.blinkFast {
+      animation: blink2 2s steps(5, start) infinite;
+      -webkit-animation: blink2 1s steps(5, start) infinite;
+    }
+
+@keyframes blink2 {
+    to {
+      visibility: hidden;
+    }
+  }
+  @-webkit-keyframes blink2 {
+    to {
+      visibility: hidden;
+    }
+  }

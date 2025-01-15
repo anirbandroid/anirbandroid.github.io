@@ -8,29 +8,53 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="assets/css/sweetalert/sweetalert.css" rel="stylesheet" />
-    <link href="assets/css/fontawesome/all.min.css" rel="stylesheet" />
+    <link href="assets/css/fontawesome/css/all.min.css" rel="stylesheet" />
     <link href="assets/css/menu.css" rel="stylesheet" />
 </head>
 <body>
-    <div class="container" style="margin-top:0%">
+    <div class="container">
         <div class="row">
             <div class="col-md-12 text-center">
-                <img src="assets/images/6.jpg" alt="" />
+                <img class="imgLogo" alt=""/>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <fieldset class="scheduler-border">
-                    <legend class="textLegend">ORDER WISE TABLES</legend>
+                    <legend class="textLegend">
+                        Order WIse Table Status
+                        &nbsp;<i class='fas fa-chair' style='color: #28097d'></i>
+                    </legend>
                     <div class="row" id="divTable"></div>
                 </fieldset>
             </div>
         </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Open Orders!!</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <div id="test">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
     <script src="assets/script/jquery.min.js"></script>
     <script src="assets/script/bootstrap.min.js"></script>
     <script src="assets/css/sweetalert/sweetalert.min.js"></script>
-    <script src="assets/css/fontawesome/all.min.js"></script>
+    <script src="assets/css/fontawesome/js/all.min.js"></script>
     <script src="data/data.js"></script>    
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js'
@@ -49,13 +73,25 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore();
+        const docRef = doc(db, "orders", "AIpXtsVGDBJHK2ZnKJUD");
         try {
+            const docSnap = await getDoc(docRef);
+            //const snapshot = await firebase.firestore().collection('orders').get();
+            if(docSnap.exists()) {
+                //console.log(docSnap.data());
+            } else {
+            console.log("Document does not exist")
+        }
+
             const q = query(collection(db, "orders"));//, where("table_id", "==", 5)        
             const querySnapshot = await getDocs(q);
                 querySnapshot.forEach((doc) => {
                 // doc.data() is never undefined for query doc snapshots
-                console.log("----------------------");
-                console.log(doc.data());
+
+                //console.log(doc.data());
+                var docData = doc.data();
+                var tableId = docData.table_id;
+                $("#" + tableId).attr("class", "svg-inline--fa fa-utensils blinkSlow");
             });
         } catch(error) {
             console.log(error)
@@ -65,24 +101,28 @@
         let lMaxTable = 5;
         let lMaxRows = 5;
         function createTables() {
+            var lTableNo = 0;
             for (var i = 1; i <= lMaxRows; i++) {
                 var lDiv = "<div class='row'><div class='col-md-1 col-sm-1 col-xs-1'></div>";
-                for (var j = 1; j <= lMaxTable; j++) {
-                    lDiv += "<div class='col-md-2 col-sm-1 col-xs-1 text-center'>";
-                    lDiv += "<i class='fa fa-utensils' style='color: #942de9; font-size:24pt'></i><br />";
-                    lDiv += "<p class='tableTxtStyle'> T - " + (i * j).toString() + "</p></div>";
+                for (var j = 0; j < lMaxTable; j++) {
+                    lTableNo += 1;
+                    lDiv += "<div class='col-md-2 col-sm-1 col-xs-1 text-center' style='cursor:pointer' onclick='openModal(" + lTableNo + ")'>";
+                    lDiv += "<i id='" + lTableNo + "' class='fa fa-utensils' style='color: #942de9; font-size:24pt'></i><br />";
+                    lDiv += "<p class='tableTxtStyle'>T - " + lTableNo.toString() + "</p></div>";
                 }
                 lDiv += "<div class='col-md-1 col-sm-1 col-xs-1'></div></div>";
-                lDiv += "<div class='row'><div class='col-md-1'></div>";
-                lDiv += "<div class='col-md-10'><hr class='hrStyleLine'></div>";
-                lDiv += "<div class='col-md-1'></div></div>";
+                lDiv += "<div class='row'><div class='col-md-12'><hr class='hrStyleLine'></div></div>";
                 $("#divTable").append(lDiv);
             }
         }
 
         $(document).ready(function () {
             createTables();
-        })
+        });
+
+        function openModal(tableId){
+            $('#myModal').modal("show");
+        }   
     </script>
 </body>
 </html>
