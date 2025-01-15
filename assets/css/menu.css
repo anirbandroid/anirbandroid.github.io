@@ -31,7 +31,7 @@ fieldset.scheduler-border {
     width:auto;
     padding:0 10px;
     border-bottom:none;
-    color: coral;
+    color: rgb(192, 192, 192);
     text-shadow: -1px 0 #5f5e5e, 0 1px #5f5e5e, 1px 0 #5f5e5e, 0 -1px #5f5e5e;
 }
 
@@ -72,15 +72,15 @@ fieldset.scheduler-border {
 
 .imgLogo
 {   
-    content:url(../images/PS1.png); 
-    animation:DynamicBackground 30s ease-in;
+    content:url(../images/6.jpg); 
+    /* animation:DynamicBackground 30s ease-in;
     animation-iteration-count:infinite;
     -webkit-animation:DynamicBackground 30s ease-in;
     -webkit-animation-iteration-count:infinite;
     -moz-animation:DynamicBackground 30s ease-in;
-    -moz-animation-iteration-count:infinite;
-    height:150px;
-    width:200px;
+    -moz-animation-iteration-count:infinite;*/
+    height:100px;
+    width:100px; 
 }
 
 @keyframes DynamicBackground

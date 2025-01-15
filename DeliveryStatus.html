@@ -29,7 +29,45 @@
     <script src="assets/script/jquery.min.js"></script>
     <script src="assets/script/bootstrap.min.js"></script>
     <script src="assets/css/sweetalert/sweetalert.min.js"></script>
-    <script src="data/data.js"></script>
+    <script src="data/data.js"></script>    
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js'
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js'
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBkIVRoJTqEtwKKsOB7dMGuKauJ_den2ew",
+            authDomain: "test-5acde.firebaseapp.com",
+            projectId: "test-5acde",
+            storageBucket: "test-5acde.firebasestorage.app",
+            messagingSenderId: "801361787817",
+            appId: "1:801361787817:web:aa053f70023512f96da2b8",
+            measurementId: "G-G73MHFD18Y"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore();
+        try {            
+            const docRef = doc(db, "orders", "AIpXtsVGDBJHK2ZnKJUD");
+            // const docSnap = await getDoc(docRef);
+            // //const snapshot = await firebase.firestore().collection('orders').get();
+            // if(docSnap.exists()) {
+            //     console.log(docSnap.data());
+            // } else {
+            // console.log("Document does not exist")
+            // }
+
+            const q = query(collection(db, "orders"));//, where("table_id", "==", 5)        
+            const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                console.log("----------------------");
+                console.log(doc.data());
+            });
+        } catch(error) {
+            console.log(error)
+        }
+    </script>
     <script>
         let lMaxTable = 5;
         let lMaxRows = 5;
@@ -47,30 +85,7 @@
 
         $(document).ready(function () {
             createTables();
-        });
-
-        $(function () {
-        });
-
-        $.urlParam = function (name) {
-            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-            if (results == null) {
-                return null;
-            }
-            return decodeURI(results[1]) || 0;
-        }
-
-        var tableParamID = $.urlParam('tableparam');
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBkIVRoJTqEtwKKsOB7dMGuKauJ_den2ew",
-            authDomain: "test-5acde.firebaseapp.com",
-            projectId: "test-5acde",
-            storageBucket: "test-5acde.firebasestorage.app",
-            messagingSenderId: "801361787817",
-            appId: "1:801361787817:web:aa053f70023512f96da2b8",
-            measurementId: "G-G73MHFD18Y"
-        };
+        })
     </script>
 </body>
 </html>
