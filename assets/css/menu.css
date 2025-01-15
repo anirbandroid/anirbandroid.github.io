@@ -5,7 +5,7 @@
 .labelHeader{
     font-size:10pt;
     font-weight:bold;
-    color:#00048f;
+    color:rgb(62, 1, 106);
     /*text-shadow: 2px 2px #2d62b4;*/
 }
 
@@ -31,8 +31,10 @@ fieldset.scheduler-border {
     width:auto;
     padding:0 10px;
     border-bottom:none;
-    color: rgb(192, 192, 192);
-    text-shadow: -1px 0 #5f5e5e, 0 1px #5f5e5e, 1px 0 #5f5e5e, 0 -1px #5f5e5e;
+    color: rgb(62, 1, 106);
+    text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+
+    /*text-shadow: -1px 0 #5f5e5e, 0 1px #5f5e5e, 1px 0 #5f5e5e, 0 -1px #5f5e5e;*/
 }
 
 .tableImgStyle {
@@ -41,12 +43,32 @@ fieldset.scheduler-border {
 }
 
 .tableTxtStyle{
-    padding-left:25px;
     font-weight:bold;
+    color:rgb(62, 1, 106);
+}
+
+.iconStyle{
+    font-size:15pt;
 }
 
 .btnOrder{
-    position:sticky;float:right;bottom:20px;
+    position:fixed;
+    float:right;
+    bottom:20px; 
+    right:20px;
+    cursor:pointer;;
+}
+
+.hrStyle {
+    height: 12px;
+    border: 0;
+    box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+}
+
+.hrStyleLine {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
 
 .shaky-btn {
@@ -79,8 +101,10 @@ fieldset.scheduler-border {
     -webkit-animation-iteration-count:infinite;
     -moz-animation:DynamicBackground 30s ease-in;
     -moz-animation-iteration-count:infinite;*/
-    height:100px;
-    width:100px; 
+    height:80px;
+    width:80px;
+    border-radius: 80px;
+    padding-top:4px;
 }
 
 @keyframes DynamicBackground

@@ -8,6 +8,7 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
     <link href="assets/css/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="assets/css/fontawesome/all.min.css" rel="stylesheet" />
     <link href="assets/css/menu.css" rel="stylesheet" />
 </head>
 <body>
@@ -18,42 +19,52 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <fieldset class="scheduler-border">
-                    <legend class="textLegend">Mocktails & Hot Beverages</legend>
+                    <legend class="textLegend">
+                        Mocktails & Hot Beverages&nbsp;<i class='fas fa-cocktail' style='color: #75c8f5'></i>
+                    </legend>
                     <div class="row" id="divMocktailsBV"></div>
-                </fieldset>
-            </div>
-            <div class="col-md-6">
-                <fieldset class="scheduler-border">
-                    <legend class="textLegend">Desi Chaat</legend>
-                    <div class="row" id="divChaat"></div>                    
                 </fieldset>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <fieldset class="scheduler-border">
                     <legend class="textLegend">
-                        Appetizer Veg&nbsp;<i class='fa fa-adjust' style='color: #38da34'></i>
+                        Appetizer Veg&nbsp;<i class='fas fa-carrot iconStyle' style='color: #3DC53B;'></i>
                     </legend>
                     <div class="row" id="divVegStarter"></div>
                 </fieldset>
             </div>
-            <div class="col-md-6">
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <fieldset class="scheduler-border">
                     <legend class="textLegend">
-                        Appetizer Non-Veg&nbsp;<i class='fa fa-adjust' style='color: #ff0000'></i>
+                        Appetizer Non-Veg
+                        &nbsp;<i class='fa fa-fish' style='color: #f65757'></i>
+                        &nbsp;<i class='fa fa-bone' style='color: #e90f0f'></i>
                     </legend>
                     <div class="row" id="divNonVegStarter"></div>
                 </fieldset>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <fieldset class="scheduler-border">
                     <legend class="textLegend">
-                        Desert
+                        Desi Chaat&nbsp;<i class='fa fa-hamburger' style='color: #fbaa3b'></i>
+                    </legend>
+                    <div class="row" id="divChaat"></div>                    
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <fieldset class="scheduler-border">
+                    <legend class="textLegend">
+                        Desert&nbsp;<i class='fa fa-ice-cream' style='color: #dc87be'></i>
                     </legend>
                     <div class="row" id="divDesert"></div>
                 </fieldset>
@@ -63,6 +74,7 @@
     <script src="assets/script/jquery.min.js"></script>
     <script src="assets/script/bootstrap.min.js"></script>
     <script src="assets/css/sweetalert/sweetalert.min.js"></script>
+    <script src="assets/css/fontawesome/all.min.js"></script>
     <script src="data/data.js"></script>
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js'
@@ -85,7 +97,6 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
         const db = getFirestore();
 
         const docRef = doc(db, "orders", "AIpXtsVGDBJHK2ZnKJUD");
@@ -155,6 +166,7 @@
             createDivs(starterVeg, "divVegStarter");
             createDivs(starterNonVeg, "divNonVegStarter");
             createDivs(desert, "divDesert");
+            console.log(desert);
         });
         
         let itemArr = [];
@@ -185,6 +197,7 @@
             }
             return decodeURI(results[1]) || 0;
         }
+
         function Generator() {
             return Math.floor(Math.random() * 26) + Date.now();
         };
