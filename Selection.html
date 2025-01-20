@@ -100,15 +100,19 @@
         const db = getFirestore();
 
         $('#btnOrder').click(function(){
-            var tableId = $.urlParam('tableId'); 
-            var orderId = Generator() + "_" + tableId;
-            const test = setDoc(doc(db, "orders", orderId), {
-                items: itemArr + "",
-                status: "ordered",
-                table_id: tableId
-            });
-            swal("Great choice!", "Your order has been placed successfully!!", "success");
-            itemArr = null;
+            var tableId = $.urlParam('tableId');
+            if(tableId != null && tableId != undefined && tableId != ""){
+                var orderId = Generator() + "_" + tableId;
+                const createOrder = setDoc(doc(db, "orders", orderId), {
+                    items: itemArr + "",
+                    status: "ordered",
+                    table_id: tableId
+                });
+                swal("Great choice!", "Your order has been placed successfully!!", "success");
+                itemArr = null;
+            }else{
+                swal("Try Again Later!", "Something Went Wrong!!", "error");                
+            }
         });
     </script>
     <script>
@@ -143,7 +147,7 @@
                     if (itemIds.length > max) {
                         $(this).prop("checked", false);
                         itemTexts.pop();
-                        swal("You've a great taste bud!", "But proceed with any " + max + " of your best choices to prepare first. You can order again!!", "info");
+                        swal("You have great taste buds!", "Give us a few moments to serve you!!", "info");
                     } else {
                         itemArr = itemTexts;
                         $('#btnOrder').focus();

@@ -104,7 +104,7 @@ fieldset.scheduler-border {
     height:80px;
     width:80px;
     border-radius: 80px !important;
-    padding-top:4px;
+    box-shadow: 6px 6px 20px rgba(71, 71, 71, 0.5);
 }
 
 @keyframes DynamicBackground
@@ -219,4 +219,16 @@ fieldset.scheduler-border {
     to {
       visibility: hidden;
     }
+  }
+
+  .tableDivStyle{
+    cursor:pointer;
+  }
+
+  .btnDeliverStyle{
+    cursor:pointer;
+  }
+
+  .colorBlue{
+    color: #28097d;
   }

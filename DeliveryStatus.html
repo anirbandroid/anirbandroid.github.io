@@ -22,8 +22,8 @@
             <div class="col-md-12">
                 <fieldset class="scheduler-border">
                     <legend class="textLegend">
-                        Order WIse Table Status
-                        &nbsp;<i class='fas fa-chair' style='color: #28097d'></i>
+                        Order Wise Table Status
+                        &nbsp;<i class='fas fa-chair colorBlue'></i>
                     </legend>
                     <div class="row" id="divTable"></div>
                 </fieldset>
@@ -33,19 +33,17 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Open Orders!!</h5>
+                  <h4 class="modal-title colorBlue" id="orderTable">No Orders!!</h4>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                    <div id="test">
-
+                    <div id="orderDiv">
                     </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>                  
                 </div>
               </div>
             </div>
@@ -58,7 +56,7 @@
     <script src="data/data.js"></script>    
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js'
-        import { getFirestore, doc, getDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js'
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs, updateDoc } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js'
 
         const firebaseConfig = {
             apiKey: "AIzaSyBkIVRoJTqEtwKKsOB7dMGuKauJ_den2ew",
@@ -73,29 +71,64 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getFirestore();
-        const docRef = doc(db, "orders", "AIpXtsVGDBJHK2ZnKJUD");
         try {
-            const docSnap = await getDoc(docRef);
-            //const snapshot = await firebase.firestore().collection('orders').get();
-            if(docSnap.exists()) {
-                //console.log(docSnap.data());
-            } else {
-            console.log("Document does not exist")
-        }
-
+            // const docRef = doc(db, "orders", "AIpXtsVGDBJHK2ZnKJUD");
+            // const docSnap = await getDoc(docRef);
+            // if(docSnap.exists()) {
+            //     //console.log(docSnap.data());
+            // } else {
+            //     console.log("Document does not exist")
+            // }
             const q = query(collection(db, "orders"));//, where("table_id", "==", 5)        
             const querySnapshot = await getDocs(q);
-                querySnapshot.forEach((doc) => {
-                // doc.data() is never undefined for query doc snapshots
-
-                //console.log(doc.data());
+            querySnapshot.forEach((doc) => {
                 var docData = doc.data();
-                var tableId = docData.table_id;
-                $("#" + tableId).attr("class", "svg-inline--fa fa-utensils blinkSlow");
+                var tableId = "I" + docData.table_id;
+                $("#" + tableId).attr("class", "svg-inline fa fa-utensils blinkSlow");
             });
         } catch(error) {
             console.log(error)
         }
+
+        $('.tableDivStyle').click(async function(){
+            var tableId =$(this).attr("id");    
+            const q = query(collection(db, "orders"), where("table_id", "==", tableId), where("status", "==", "ordered"));   
+            const querySnapshot = await getDocs(q);
+            var index = 0;
+            querySnapshot.forEach((doc) => {
+                var docData = doc.data();
+                index++;
+                var lDiv = "<table class='table'><thead><tr>";
+                lDiv += "<th scope='col'>#</th><th scope='col'>Item</th><th scope='col'>Action</th></tr></thead>";
+                lDiv += "</tbody><tr><th scope='row'>" + index + "</th>";
+                lDiv += "<th scope='row'>" + docData.items + "</th>";
+                lDiv += "<th scope='row'>";
+                lDiv += "<input type='button' class='btn btn-success btnDeliverStyle'";
+                lDiv+= "value='Deliver' id=" + doc.id + " />";
+                lDiv += "</th></tr></tbody>";
+                $("#orderDiv").append(lDiv);
+                $("#orderTable").text("Open Orders for Table # " + docData.table_id);
+            });            
+            $('#myModal').modal("show");
+        });
+
+        $(document).on('click', '.btnDeliverStyle', async function(){
+            var orderId =$(this).attr("id");
+            const docRef = doc(db, "orders", orderId);
+            const docSnap = await getDoc(docRef);
+            if(docSnap.exists()) {
+                await updateDoc(docRef, {
+                    status: 'delivered'
+                });
+            }
+            console.log(docSnap.data());
+            // Your Code
+        });  
+
+        $(".modal").on("hidden.bs.modal", function() {
+            $("#orderTable").text('No Orders!!');
+            $("#orderDiv").html('');
+        });
     </script>
     <script>
         let lMaxTable = 5;
@@ -106,11 +139,11 @@
                 var lDiv = "<div class='row'><div class='col-md-1 col-sm-1 col-xs-1'></div>";
                 for (var j = 0; j < lMaxTable; j++) {
                     lTableNo += 1;
-                    lDiv += "<div class='col-md-2 col-sm-1 col-xs-1 text-center' style='cursor:pointer' onclick='openModal(" + lTableNo + ")'>";
-                    lDiv += "<i id='" + lTableNo + "' class='fa fa-utensils' style='color: #942de9; font-size:24pt'></i><br />";
+                    lDiv += "<div class='col-md-2 col-sm-1 col-xs-1 text-center tableDivStyle' id='" + lTableNo + "'>";
+                    lDiv += "<i id='I" + lTableNo + "' class='fa fa-utensils' style='color: #942de9; font-size:24pt'></i><br />";
                     lDiv += "<p class='tableTxtStyle'>T - " + lTableNo.toString() + "</p></div>";
                 }
-                lDiv += "<div class='col-md-1 col-sm-1 col-xs-1'></div></div>";
+                lDiv += "</div>";
                 lDiv += "<div class='row'><div class='col-md-12'><hr class='hrStyleLine'></div></div>";
                 $("#divTable").append(lDiv);
             }
@@ -119,10 +152,6 @@
         $(document).ready(function () {
             createTables();
         });
-
-        function openModal(tableId){
-            $('#myModal').modal("show");
-        }   
     </script>
 </body>
 </html>
