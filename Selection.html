@@ -105,11 +105,12 @@
                 var orderId = Generator() + "_" + tableId;
                 const createOrder = setDoc(doc(db, "orders", orderId), {
                     items: itemArr + "",
-                    status: "ordered",
+                    status: "Ordered",
                     table_id: tableId
                 });
                 swal("Great choice!", "Your order has been placed successfully!!", "success");
                 itemArr = null;
+                $('input:checkbox').removeAttr('checked');
             }else{
                 swal("Try Again Later!", "Something Went Wrong!!", "error");                
             }

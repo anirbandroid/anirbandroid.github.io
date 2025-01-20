@@ -17,11 +17,12 @@
 }
 
 fieldset.scheduler-border {
-    border: 2px dotted #ddd !important;
+    border: 1px solid rgb(62, 1, 106) !important;
     padding: 0 0 1em 1em !important;
     margin: 0 0 1.2em 0 !important;
     -webkit-box-shadow:  0px 0px 0px 0px #000;
     box-shadow:  0px 0px 0px 0px #000;
+    border:1px
 }
 
 .textLegend {
@@ -95,12 +96,6 @@ fieldset.scheduler-border {
 .imgLogo
 {   
     content:url(../images/6.jpg); 
-    /* animation:DynamicBackground 30s ease-in;
-    animation-iteration-count:infinite;
-    -webkit-animation:DynamicBackground 30s ease-in;
-    -webkit-animation-iteration-count:infinite;
-    -moz-animation:DynamicBackground 30s ease-in;
-    -moz-animation-iteration-count:infinite;*/
     height:80px;
     width:80px;
     border-radius: 80px !important;
@@ -229,6 +224,10 @@ fieldset.scheduler-border {
     cursor:pointer;
   }
 
-  .colorBlue{
-    color: #28097d;
+  .tableHeaderColor{
+    color: rgb(62, 1, 106);;
+  }
+
+  .tableBodyColor{
+    color: dimgray;
   }

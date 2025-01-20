@@ -47,7 +47,7 @@
                 </div>
               </div>
             </div>
-          </div>
+        </div>
     </div>
     <script src="assets/script/jquery.min.js"></script>
     <script src="assets/script/bootstrap.min.js"></script>
@@ -79,7 +79,7 @@
             // } else {
             //     console.log("Document does not exist")
             // }
-            const q = query(collection(db, "orders"));//, where("table_id", "==", 5)        
+            const q = query(collection(db, "orders"), where("status", "==", "Ordered"));        
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
                 var docData = doc.data();
@@ -91,8 +91,12 @@
         }
 
         $('.tableDivStyle').click(async function(){
-            var tableId =$(this).attr("id");    
-            const q = query(collection(db, "orders"), where("table_id", "==", tableId), where("status", "==", "ordered"));   
+            var tableId =$(this).attr("id");
+            getOrders(tableId);
+        });
+
+        const getOrders = async function(tableId){
+            const q = query(collection(db, "orders"), where("table_id", "==", tableId), where("status", "==", "Ordered"));   
             const querySnapshot = await getDocs(q);
             var index = 0;
             querySnapshot.forEach((doc) => {
@@ -110,7 +114,7 @@
                 $("#orderTable").text("Open Orders for Table # " + docData.table_id);
             });            
             $('#myModal').modal("show");
-        });
+        }
 
         $(document).on('click', '.btnDeliverStyle', async function(){
             var orderId =$(this).attr("id");
@@ -118,17 +122,23 @@
             const docSnap = await getDoc(docRef);
             if(docSnap.exists()) {
                 await updateDoc(docRef, {
-                    status: 'delivered'
+                    status: 'Delivered'
                 });
+                clearModal();
+                var docData = docSnap.data();            
+                getOrders(docSnap.table_id);
             }
             console.log(docSnap.data());
-            // Your Code
         });  
 
         $(".modal").on("hidden.bs.modal", function() {
+            clearModal();
+        });
+
+        function clearModal(){
             $("#orderTable").text('No Orders!!');
             $("#orderDiv").html('');
-        });
+        }
     </script>
     <script>
         let lMaxTable = 5;

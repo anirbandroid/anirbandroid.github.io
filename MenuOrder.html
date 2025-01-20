@@ -1,10 +1,91 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title></title>
-	<meta charset="utf-8" />
+    <title>Order Details</title>
+    <meta charset="utf-8" http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/images/favicon1.ico" />
+    <link rel="icon" type="image/ico" href="assets/images/favicon1.ico" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="assets/css/fontawesome/css/all.min.css" rel="stylesheet" />
+    <link href="assets/css/menu.css" rel="stylesheet" />
 </head>
 <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <img class="imgLogo" alt=""/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <fieldset class="scheduler-border">
+                    <legend class="textLegend">
+                        Table Wise Order Status
+                        &nbsp;<i class='fas fa-chair colorBlue'></i>
+                    </legend>
+                    <table class="table">
+                        <thead>
+                            <tr class="tableHeaderColor">
+                                <th scope='col' style="width:3%">#</th>
+                                <th scope='col' style="width:5%">Table</th>
+                                <th scope='col'>Items</th>
+                                <th scope='col' style="width:10%">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableOrder" class="tableBodyColor">
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <script src="assets/script/jquery.min.js"></script>
+    <script src="assets/script/bootstrap.min.js"></script>
+    <script src="assets/css/sweetalert/sweetalert.min.js"></script>
+    <script src="assets/css/fontawesome/js/all.min.js"></script>
+    <script src="data/data.js"></script>    
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js'
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs, orderBy } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js'
 
+        const firebaseConfig = {
+            apiKey: "AIzaSyBkIVRoJTqEtwKKsOB7dMGuKauJ_den2ew",
+            authDomain: "test-5acde.firebaseapp.com",
+            projectId: "test-5acde",
+            storageBucket: "test-5acde.firebasestorage.app",
+            messagingSenderId: "801361787817",
+            appId: "1:801361787817:web:aa053f70023512f96da2b8",
+            measurementId: "G-G73MHFD18Y"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore();
+        try {
+            const q = query(collection(db, "orders"), orderBy("status", "desc"));        
+            const querySnapshot = await getDocs(q);            
+            var index = 0;
+            querySnapshot.forEach((doc) => {
+                var docData = doc.data();
+                index++;
+                var lDiv = "<tr><th scope='row'>" + index + "</th>";
+                lDiv += "<th scope='row'>T - " + docData.table_id + "</th>";
+                lDiv += "<th scope='row'>" + docData.items + "</th>";                  
+                if(docData.status === "Delivered"){
+                    lDiv += "<th scope='row' style='color:green'>" + docData.status + "&nbsp;";  
+                    lDiv += "<i class='fas fa-check' style='color:green'></i>";
+                }else{
+                    lDiv += "<th scope='row' style='color:red'>" + docData.status + "&nbsp;";  
+                    lDiv += "<i class='fas fa-bell blinkFast' style='color:red; font-size:12pt !important'></i>";
+                }
+                lDiv += "</th></tr>";                
+                $("#tableOrder").append(lDiv);
+            });
+        } catch(error) {
+            console.log(error)
+        }
+    </script>
 </body>
 </html>
