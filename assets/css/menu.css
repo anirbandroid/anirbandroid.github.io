@@ -6,7 +6,6 @@
     font-size:10pt;
     font-weight:bold;
     color:rgb(62, 1, 106);
-    /*text-shadow: 2px 2px #2d62b4;*/
 }
 
 .labelDescription{
@@ -34,8 +33,6 @@ fieldset.scheduler-border {
     border-bottom:none;
     color: rgb(62, 1, 106);
     text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
-
-    /*text-shadow: -1px 0 #5f5e5e, 0 1px #5f5e5e, 1px 0 #5f5e5e, 0 -1px #5f5e5e;*/
 }
 
 .tableImgStyle {
@@ -50,6 +47,19 @@ fieldset.scheduler-border {
 
 .iconStyle{
     font-size:15pt;
+}
+
+.form-check{
+    padding-left: 2%;
+}
+
+legend{
+    margin-bottom:10px !important;
+}
+
+.table{
+    max-width:99%;
+    margin-bottom:10px !important;
 }
 
 .btnOrder{
@@ -225,9 +235,17 @@ fieldset.scheduler-border {
   }
 
   .tableHeaderColor{
-    color: rgb(62, 1, 106);;
+    color: rgb(62, 1, 106) !important;
+  }
+
+  .colorBlue{
+    color: rgb(62, 1, 106);
   }
 
   .tableBodyColor{
     color: dimgray;
   }
+
+  th{
+    color: rgb(62, 1, 106) !important;
+}
