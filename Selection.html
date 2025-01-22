@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Select Menu</title>
+    <title>Select Menu Items</title>
 	<meta charset="utf-8" http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <link rel="apple-touch-icon" sizes="76x76" href="assets/images/favicon2.ico" />
     <link rel="icon" type="image/ico" href="assets/images/favicon2.ico" />
@@ -22,7 +22,8 @@
             <div class="col-md-12">
                 <fieldset class="scheduler-border">
                     <legend class="textLegend">
-                        Mocktails & Hot Beverages&nbsp;<i class='fas fa-cocktail' style='color: #75c8f5'></i>
+                        Mocktails & Hot Beverages&nbsp;
+                        <i class='fas fa-cocktail fa-lg' style='color: #75c8f5'></i>
                     </legend>
                     <div class="row" id="divMocktailsBV"></div>
                 </fieldset>
@@ -32,7 +33,8 @@
             <div class="col-md-12">
                 <fieldset class="scheduler-border">
                     <legend class="textLegend">
-                        Appetizer Veg&nbsp;<i class='fas fa-carrot iconStyle' style='color: #3DC53B;'></i>
+                        Appetizer Veg&nbsp;
+                        <i class='fas fa-carrot fa-lg' style='color: #3DC53B;'></i>
                     </legend>
                     <div class="row" id="divVegStarter"></div>
                 </fieldset>
@@ -43,8 +45,8 @@
                 <fieldset class="scheduler-border">
                     <legend class="textLegend">
                         Appetizer Non-Veg
-                        &nbsp;<i class='fa fa-fish' style='color: #f65757'></i>
-                        &nbsp;<i class='fa fa-bone' style='color: #e90f0f'></i>
+                        &nbsp;<i class='fa fa-fish fa-lg' style='color: #f65757'></i>
+                        &nbsp;<i class='fa fa-bone fa-lg' style='color: #e90f0f'></i>
                     </legend>
                     <div class="row" id="divNonVegStarter"></div>
                 </fieldset>
@@ -54,7 +56,8 @@
             <div class="col-md-12">
                 <fieldset class="scheduler-border">
                     <legend class="textLegend">
-                        Desi Chaat&nbsp;<i class='fa fa-hamburger' style='color: #fbaa3b'></i>
+                        Desi Chaat&nbsp;
+                        <i class='fa fa-hamburger fa-lg' style='color: #fbaa3b'></i>
                     </legend>
                     <div class="row" id="divChaat"></div>                    
                 </fieldset>
@@ -64,12 +67,13 @@
             <div class="col-md-12">
                 <fieldset class="scheduler-border">
                     <legend class="textLegend">
-                        Desert&nbsp;<i class='fa fa-ice-cream' style='color: #dc87be'></i>
+                        Desert&nbsp;
+                        <i class='fa fa-ice-cream fa-lg' style='color: #dc87be'></i>
                     </legend>
                     <div class="row" id="divDesert"></div>
                 </fieldset>
             </div>
-        <input type="button" class="btn btn-info btnOrder shaky-btn" id="btnOrder" value="ORDER NOW" />
+        <input type="button" class="btn btnOrder shaky-btn" id="btnOrder" value="ORDER NOW" />
     </div>
     <script src="assets/script/jquery.min.js"></script>
     <script src="assets/script/bootstrap.min.js"></script>
@@ -79,12 +83,7 @@
     <script type="application/javascript" src="http://ipinfo.io/?format=jsonp&callback=getIP"></script>
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js'
-
-        // If you enabled Analytics in your project, add the Firebase SDK for Google Analytics
-        import { getAnalytics } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js'
-
-        import { getAuth } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js'
-        import { getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js'
+        import { getFirestore, doc, getDoc, setDoc, Timestamp, collection, query, where, getDocs } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js'
 
         const firebaseConfig = {
             apiKey: "AIzaSyBkIVRoJTqEtwKKsOB7dMGuKauJ_den2ew",
@@ -102,18 +101,38 @@
 
         $('#btnOrder').click(function(){
             var tableId = $.urlParam('tableId');
-            if(tableId != null && tableId != undefined && tableId != ""){
-                var orderId = Generator() + "_" + tableId;
-                const createOrder = setDoc(doc(db, "orders", orderId), {
-                    items: itemArr + "",
-                    status: "Ordered",
-                    table_id: tableId
-                });
-                swal("You have great taste buds!", "Give us a few moments to serve you!!", "success");
-                itemArr = null;
-                $('input:checkbox').removeAttr('checked');
-            }else{
-                swal("Try Again Later!", "Something Went Wrong!!", "error");                
+            if(itemArr.length > 0){
+                if(tableId != null && tableId != undefined && tableId != ""){
+                    swal({
+                        title: "Are you sure?",
+                        text: "Yes, to allow us prapare your food!",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        closeOnConfirm: false,
+                        closeOnCancel: true
+                        },
+                        function(isConfirm){
+                            if (isConfirm) {
+                                var orderId = Generator() + "_" + tableId;
+                                const createOrder = setDoc(doc(db, "orders", orderId), {
+                                    items: itemArr + "",
+                                    status: "Ordered",
+                                    table_id: tableId,
+                                    timestamp: Timestamp.fromDate(new Date())
+                                });
+                                swal("You have great taste buds!", "Give us a few moments to serve you!!", "success");
+                                itemArr = null;
+                                $('input:checkbox').removeAttr('checked');
+                            }
+                    });
+                }else{
+                    swal("Try Again Later!", "Something Went Wrong!!", "error");                
+                }
+            }else{                
+                swal("No Selection!", "Atleast selct one item to serve you!!", "info");                
             }
         });
     </script>

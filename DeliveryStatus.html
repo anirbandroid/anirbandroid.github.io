@@ -40,6 +40,17 @@
                 </div>
                 <div class="modal-body">
                     <div id="orderDiv">
+                        <table class="table">
+                            <thead>
+                                <tr class="tableHeaderColor">
+                                    <th scope='col' style="width:3%">#</th>
+                                    <th scope='col'>Items</th>
+                                    <th scope='col' style="width:10%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableOrder" class="tableBodyColor">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -92,25 +103,23 @@
 
         $('.tableDivStyle').click(async function(){
             var tableId =$(this).attr("id");
-            getOrders(tableId);
+            getOrderByTableID(tableId);
         });
 
-        const getOrders = async function(tableId){
+        const getOrderByTableID = async function(tableId){
             const q = query(collection(db, "orders"), where("table_id", "==", tableId), where("status", "==", "Ordered"));   
             const querySnapshot = await getDocs(q);
             var index = 0;
             querySnapshot.forEach((doc) => {
                 var docData = doc.data();
                 index++;
-                var lDiv = "<table class='table'><thead><tr>";
-                lDiv += "<th scope='col'>#</th><th scope='col'>Item</th><th scope='col'>Action</th></tr></thead>";
-                lDiv += "</tbody><tr><th scope='row'>" + index + "</th>";
+                var lDiv = "<tr><th scope='row'>" + index + ".</th>";
                 lDiv += "<th scope='row'>" + docData.items + "</th>";
                 lDiv += "<th scope='row'>";
                 lDiv += "<input type='button' class='btn btn-success btnDeliverStyle'";
                 lDiv+= "value='Deliver' id=" + doc.id + " />";
-                lDiv += "</th></tr></tbody>";
-                $("#orderDiv").append(lDiv);
+                lDiv += "</th></tr>";
+                $("#tableOrder").append(lDiv);
                 $("#orderTable").text("Open Orders for Table # " + docData.table_id);
             });            
             $('#myModal').modal("show");
@@ -126,9 +135,8 @@
                 });
                 clearModal();
                 var docData = docSnap.data();            
-                getOrders(docSnap.table_id);
+                getOrderByTableID(docSnap.table_id);
             }
-            console.log(docSnap.data());
         });  
 
         $(".modal").on("hidden.bs.modal", function() {
@@ -136,8 +144,8 @@
         });
 
         function clearModal(){
-            $("#orderTable").text('No Orders!!');
-            $("#orderDiv").html('');
+            $("#tableOrder").html('');
+            //$("#orderDiv").html('');
         }
     </script>
     <script>

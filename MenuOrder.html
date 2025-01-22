@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Order Details</title>
-    <meta charset="utf-8" http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" http-equiv="refresh" content="60" />
     <link rel="apple-touch-icon" sizes="76x76" href="assets/images/favicon1.ico" />
     <link rel="icon" type="image/ico" href="assets/images/favicon1.ico" />
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
@@ -31,6 +31,7 @@
                                 <th scope='col' style="width:3%">#</th>
                                 <th scope='col' style="width:5%">Table</th>
                                 <th scope='col'>Items</th>
+                                <th scope='col' style="width:12%">Pneding Since</th>
                                 <th scope='col' style="width:10%">Status</th>
                             </tr>
                         </thead>
@@ -64,20 +65,25 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore();
         try {
-            const q = query(collection(db, "orders"), orderBy("status", "desc"));        
+            const q = query(collection(db, "orders"), orderBy("status", "desc"), orderBy("timestamp", "asc"));        
             const querySnapshot = await getDocs(q);            
             var index = 0;
+            var currDate = new Date();
+            var currTime = currDate.getTime();
             querySnapshot.forEach((doc) => {
                 var docData = doc.data();
+                var createTime = docData.timestamp.toDate().getTime();
                 index++;
                 var lDiv = "<tr><th scope='row'>" + index + "</th>";
                 lDiv += "<th scope='row'>T - " + docData.table_id + "</th>";
-                lDiv += "<th scope='row'>" + docData.items + "</th>";                  
-                if(docData.status === "Delivered"){
-                    lDiv += "<th scope='row' style='color:green'>" + docData.status + "&nbsp;";  
+                lDiv += "<th scope='row'>" + docData.items + "</th>";                   
+                if(docData.status === "Delivered"){       
+                    lDiv += "<th scope='row'> -- </th>";
+                    lDiv += "<th scope='row' style='color:green !important'>" + docData.status + "&nbsp;";  
                     lDiv += "<i class='fas fa-check' style='color:green'></i>";
-                }else{
-                    lDiv += "<th scope='row' style='color:red'>" + docData.status + "&nbsp;";  
+                }else{       
+                    lDiv += "<th scope='row'>" + returnTime(currTime, createTime) + " minutes</th>";
+                    lDiv += "<th scope='row' style='color:red !important' class='blinkFast'>" + docData.status + "&nbsp;";  
                     lDiv += "<i class='fas fa-bell blinkFast' style='color:red; font-size:12pt !important'></i>";
                 }
                 lDiv += "</th></tr>";                
@@ -85,6 +91,16 @@
             });
         } catch(error) {
             console.log(error)
+        }
+
+        function returnTime(currTime, createTime){
+            var diff =(currTime - createTime) / 1000;
+            // Convert the difference from seconds to minutes
+            diff /= 60;
+            // Return the absolute value of the rounded difference in minutes
+            var pendingTime = Math.round(diff);
+            //pendingTime += "-" + diff % 60;
+            return pendingTime;
         }
     </script>
 </body>
