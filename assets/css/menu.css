@@ -414,3 +414,19 @@ th{
     -webkit-animation: dothatopcheck-19 0.4s ease 0s forwards;
     animation: dothatopcheck-19 0.4s ease 0s forwards;
   }
+
+  
+  #txtSearch {
+    background-image: url('../images/search2.png');
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    width: 50%;
+    height: 50px;
+    font-size: 16px;
+    padding: 8px 10px 8px 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+    text-align: right;
+    margin-right: 10px;
+    float: right;
+}

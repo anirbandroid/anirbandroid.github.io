@@ -25,7 +25,8 @@
                         Table Wise Order Status
                         &nbsp;<i class='fas fa-chair colorBlue'></i>
                     </legend>
-                    <table class="table">
+                    <input type="text" id="txtSearch" onkeyup="onSearch()" placeholder="Search for items">
+                    <table id="tableOrder" class="table table-striped">
                         <thead>
                             <tr class="tableHeaderColor">
                                 <th scope='col' style="width:8%">Table #</th>
@@ -34,7 +35,7 @@
                                 <th scope='col' style="width:10%">Status</th>
                             </tr>
                         </thead>
-                        <tbody id="tableOrder" class="tableBodyColor">
+                        <tbody id="bodyOrder" class="tableBodyColor">
                         </tbody>
                     </table>
                 </fieldset>
@@ -73,19 +74,19 @@
                 var docData = doc.data();
                 var createTime = docData.timestamp.toDate().getTime();
                 index++;
-                var lDiv = "<tr><th scope='row'>T - " + docData.table_id + "</th>";
-                lDiv += "<th scope='row'>" + docData.items + "</th>";                   
+                var lDiv = "<tr><td scope='row'>T - " + docData.table_id + "</td>";
+                lDiv += "<td scope='row'>" + docData.items + "</td>";                   
                 if(docData.status === "Delivered"){       
-                    lDiv += "<th scope='row'> -- </th>";
-                    lDiv += "<th scope='row' style='color:green !important'>" + docData.status + "&nbsp;";  
+                    lDiv += "<td scope='row'> -- </td>";
+                    lDiv += "<td scope='row' style='color:green !important'>" + docData.status + "&nbsp;";  
                     lDiv += "<i class='fas fa-check' style='color:green'></i>";
                 }else{       
-                    lDiv += "<th scope='row'>" + returnTime(currTime, createTime) + " minutes</th>";
-                    lDiv += "<th scope='row' style='color:red !important' class='blinkFast'>" + docData.status + "&nbsp;";  
+                    lDiv += "<td scope='row'>" + returnTime(currTime, createTime) + " minutes</td>";
+                    lDiv += "<td scope='row' style='color:red !important' class='blinkFast'>" + docData.status + "&nbsp;";  
                     lDiv += "<i class='fas fa-bell blinkFast' style='color:red; font-size:12pt !important'></i>";
                 }
-                lDiv += "</th></tr>";                
-                $("#tableOrder").append(lDiv);
+                lDiv += "</td></tr>";                
+                $("#bodyOrder").append(lDiv);
             });
         } catch(error) {
             console.log(error)
@@ -99,6 +100,35 @@
             var pendingTime = Math.round(diff);
             //pendingTime += "-" + diff % 60;
             return pendingTime;
+        }
+
+        $(document).ready(function(){
+            //$('#tableOrder').dataTable();
+        });
+
+    </script>
+    <script>        
+        function onSearch() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("txtSearch");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tableOrder");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                console.log(td);
+                if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+                }
+            }
         }
     </script>
 </body>
