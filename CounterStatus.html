@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Counter Status</title>
+    <meta charset="utf-8" http-equiv="refresh" content="60" />
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/images/favicon1.ico" />
+    <link rel="icon" type="image/ico" href="assets/images/favicon1.ico" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="assets/css/fontawesome/css/all.min.css" rel="stylesheet" />
+    <link href="assets/css/menu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <img class="imgLogo" alt=""/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <fieldset class="scheduler-border">
+                    <legend class="textLegend">
+                        Counter - Table Wise Order Status
+                        &nbsp;<i class='fas fa-chair colorBlue'></i>
+                    </legend>
+                    <div class="row" id="divCounter"></div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title colorBlue" id="orderTable">No Orders!!</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <div id="orderDiv">
+                        <table class="table">
+                            <thead>
+                                <tr class="tableHeaderColor">
+                                    <th scope='col' style="width:10%">Table</th>
+                                    <th scope='col'>Item</th>
+                                    <th scope='col' style="width:10%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableOrder" class="tableBodyColor">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>                  
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/script/jquery.min.js"></script>
+    <script src="assets/script/bootstrap.min.js"></script>
+    <script src="assets/css/sweetalert/sweetalert.min.js"></script>
+    <script src="assets/css/fontawesome/js/all.min.js"></script>
+    <script src="data/data.js"></script>    
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js'
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs, updateDoc, Timestamp } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js'
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBkIVRoJTqEtwKKsOB7dMGuKauJ_den2ew",
+            authDomain: "test-5acde.firebaseapp.com",
+            projectId: "test-5acde",
+            storageBucket: "test-5acde.firebasestorage.app",
+            messagingSenderId: "801361787817",
+            appId: "1:801361787817:web:aa053f70023512f96da2b8",
+            measurementId: "G-G73MHFD18Y"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore();
+        try {
+            const q = query(collection(db, "order_items"), where("status", "==", "Ordered"));        
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                var docData = doc.data();
+                var counterId = docData.counter;
+                $("#C" + counterId).attr("class", "svg-inline fa fa-utensils blinkSlow");
+            });
+        } catch(error) {
+            console.log(error)
+        }
+
+        $('.tableDivStyle').click(async function(){
+            var counterId =$(this).attr("id");
+            getOrderByCounterID(counterId);
+        });
+
+        const getParentOrderDetails = async function(orderId){
+            const docRef = doc(db, "orders", orderId);
+            const docSnap = await getDoc(docRef);
+            return docSnap.data();
+        }
+
+        const getOrderByCounterID = async function(counterId){
+            const q = query(collection(db, "order_items"), where("counter", "==", counterId), where("status", "==", "Ordered"));      
+            const querySnapshot = await getDocs(q);
+            var index = 0;
+            querySnapshot.forEach((doc) => {
+                var docData = doc.data();
+                index++;
+                var lDiv = "<tr><th scope='row'>" + docData.tableId + "</th>";
+                lDiv += "<th scope='row'>" + docData.item + "</th>";
+                lDiv += "<th scope='row'>";
+                lDiv += "<input type='button' class='btn btn-success btnDeliverStyle'";
+                lDiv+= "value='Deliver' id=" + doc.id + " />";
+                lDiv += "</th></tr>";
+                $("#tableOrder").append(lDiv);
+                $("#orderTable").text("Open Orders for # " + docData.counter);
+            });            
+            $('#myModal').modal("show");
+        }
+
+        $(document).on('click', '.btnDeliverStyle', async function(){
+            var orderId =$(this).attr("id");
+            const docRef = doc(db, "order_items", orderId);
+            const docSnap = await getDoc(docRef);
+            if(docSnap.exists()) {
+                console.log(docSnap.data());
+                await updateDoc(docRef, {
+                    status: 'Delivered',
+                    updatedAt: Timestamp.fromDate(new Date())
+                });
+                setTimeout(location.reload(), 5000);
+                //location.reload();
+                // clearModal();
+                // var docData = docSnap.data();            
+                // getOrderByCounterID(docSnap.table_id);
+            }
+        });  
+
+        $(".modal").on("hidden.bs.modal", function() {
+            clearModal();
+        });
+
+        function clearModal(){
+            $("#tableOrder").html('');
+        }
+    </script>
+    <script>
+        function createCounters() {
+            let lMaxCounter = counters.length/2;
+            let lMaxRows = 2;
+            var lCounterNo = 0;
+            for (var i = 1; i <= lMaxRows; i++) {
+                var lDiv = "<div class='row'><div class='col-md-2 col-sm-2 col-xs-2'></div>";
+                for (var j = 0; j < lMaxCounter; j++) {
+                    var currCounter = counters[lCounterNo];
+                    lDiv += "<div class='col-md-2 col-sm-2 col-xs-2 text-center tableDivStyle' id='" + currCounter.id + "'>";
+                    lDiv += "<i id='C" + currCounter.id + "' class='fa fa-utensils' style='color: #942de9; font-size:24pt'></i><br />";
+                    lDiv += "<p class='tableTxtStyle'>" + currCounter.name.toString() + "</p></div>";
+                    lCounterNo ++;
+                }
+                lDiv += "<div class='col-md-2 col-sm-2 col-xs-2'></div></div>";
+                lDiv += "<div class='row'><div class='col-md-12'><hr class='hrStyleLine'></div></div>";
+                $("#divCounter").append(lDiv);
+            }      
+        }
+
+        $(document).ready(function () {
+            createCounters();
+        });
+    </script>
+</body>
+</html>

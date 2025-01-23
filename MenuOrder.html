@@ -29,7 +29,7 @@
                     <table id="tableOrder" class="table table-striped">
                         <thead>
                             <tr class="tableHeaderColor">
-                                <th scope='col' style="width:8%">Table #</th>
+                                <th scope='col' style="width:8%">Table</th>
                                 <th scope='col'>Items</th>
                                 <th scope='col' style="width:12%">Pneding Since</th>
                                 <th scope='col' style="width:10%">Status</th>
@@ -74,7 +74,7 @@
                 var docData = doc.data();
                 var createTime = docData.timestamp.toDate().getTime();
                 index++;
-                var lDiv = "<tr><td scope='row'>T - " + docData.table_id + "</td>";
+                var lDiv = "<tr><td scope='row'>" + docData.table_id + "</td>";
                 lDiv += "<td scope='row'>" + docData.items + "</td>";                   
                 if(docData.status === "Delivered"){       
                     lDiv += "<td scope='row'> -- </td>";

@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Select Menu Items</title>
+    <title>Select Menu</title>
 	<meta charset="utf-8" http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <link rel="apple-touch-icon" sizes="76x76" href="assets/images/favicon2.ico" />
     <link rel="icon" type="image/ico" href="assets/images/favicon2.ico" />
@@ -22,7 +22,7 @@
             <div class="col-md-12">
                 <fieldset class="scheduler-border">
                     <legend class="textLegend">
-                        Mocktails & Hot Beverages&nbsp;
+                        Mocktails & Beverages&nbsp;
                         <i class='fas fa-cocktail fa-lg' style='color: #75c8f5'></i>
                     </legend>
                     <div class="row" id="divMocktailsBV"></div>
@@ -118,14 +118,28 @@
                         function(isConfirm){
                             if (isConfirm) {
                                 var orderId = Generator() + "_" + tableId;
-                                const createOrder = setDoc(doc(db, "orders", orderId), {
+                                console.log(counterArr);
+                                const createParentOrder = setDoc(doc(db, "orders", orderId), {
                                     items: itemArr + "",
                                     status: "Ordered",
                                     table_id: tableId,
                                     timestamp: Timestamp.fromDate(new Date())
                                 });
+                                for(var i=0; i<counterArr.length; i++){
+                                    var elem = counterArr[i];
+                                    var childOrderId = orderId + "_" + i.toString();
+                                    const createItemOrders = setDoc(doc(db, "order_items", childOrderId), {
+                                        counter: elem[1],
+                                        createdAt: Timestamp.fromDate(new Date()),
+                                        item: elem[0],
+                                        orderId: orderId,
+                                        status: "Ordered",
+                                        tableId: tableId
+                                    });
+                                }
                                 swal("You have great taste buds!", "Give us a few moments to serve you!!", "success");
                                 itemArr = null;
+                                counterArr = null;
                                 $('input:checkbox').removeAttr('checked');
                             }
                     });
@@ -142,7 +156,7 @@
             $(jQuery.parseJSON(JSON.stringify(dataset))).each(function () {
                 var lDiv = "<div class='row'><div class='col-md-1'></div><div class='col-md-11'>";
                 lDiv += "<div class='form-check'>";
-                lDiv += "<input class='form-check-input' style='cursor:pointer' name='chkMenu' type='checkbox' value='" + this.id + "'id='" + this.id + "'>&nbsp;";
+                lDiv += "<input class='form-check-input' style='cursor:pointer' name='chkMenu' type='checkbox' value='" + this.counter + "'id='" + this.id + "'>&nbsp;";
                 lDiv += "<label class='form-check-label labelHeader' style='cursor:pointer' for='" + this.id + "'>" + this.name + "</label>";
                 lDiv += "&nbsp;<img alt='' src='assets/images/" + this.icon + "' title='" + this.title + "'/></div></div></div>";
                 $("#" + divID).append(lDiv);
@@ -158,16 +172,22 @@
         });
         
         let itemArr = [];
+        let counterArr = [];
         $(function () {
             $(".form-check input").change(function () {
                 const lMax = 3;
                 let itemIds = [];
                 let itemTexts = [];
+                let itemCounter = [];
                 $("input:checkbox[name=chkMenu]:checked").each(function () {
                     if (itemIds.length < lMax) {
-                        itemIds.push($(this).val());
-                        itemTexts.push($(this).next("label").text());
+                        var counterVal = $(this).val();
+                        var itemVal = $(this).next("label").text();
+                        itemIds.push(counterVal);
+                        itemTexts.push(itemVal);
                         itemArr = itemTexts;
+                        itemCounter.push([itemVal, counterVal]);
+                        counterArr = itemCounter;
                         $('#btnOrder').focus();
                     } else {
                         $(this).prop("checked", false);
