@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Counter Tablew Wise Details</title>
+    <meta charset="utf-8" http-equiv="refresh" content="60" />
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/images/favicon1.ico" />
+    <link rel="icon" type="image/ico" href="assets/images/favicon1.ico" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/sweetalert/sweetalert.css" rel="stylesheet" />
+    <link href="assets/css/fontawesome/css/all.min.css" rel="stylesheet" />
+    <link href="assets/css/menu.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <img class="imgLogo" alt=""/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <fieldset class="scheduler-border">
+                    <legend class="textLegend">
+                        Counter - Table Wise Order Status
+                        &nbsp;<i class='fas fa-chair colorBlue'></i>
+                    </legend>
+                    <input type="text" id="txtSearch" onkeyup="onSearch()" placeholder="Search for items">
+                    <table id="tableOrder" class="table table-striped">
+                        <thead>
+                            <tr class="tableHeaderColor">
+                                <th scope='col' style="width:8%">Counter</th>
+                                <th scope='col'>Item</th>
+                                <th scope='col' style="width:8%">Table</th>
+                                <th scope='col' style="width:12%">Pneding Since</th>
+                                <th scope='col' style="width:10%">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyOrder" class="tableBodyColor">
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <script src="assets/script/jquery.min.js"></script>
+    <script src="assets/script/bootstrap.min.js"></script>
+    <script src="assets/css/sweetalert/sweetalert.min.js"></script>
+    <script src="assets/css/fontawesome/js/all.min.js"></script>
+    <script src="data/data.js"></script>    
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js'
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs, orderBy } from 'https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js'
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBkIVRoJTqEtwKKsOB7dMGuKauJ_den2ew",
+            authDomain: "test-5acde.firebaseapp.com",
+            projectId: "test-5acde",
+            storageBucket: "test-5acde.firebasestorage.app",
+            messagingSenderId: "801361787817",
+            appId: "1:801361787817:web:aa053f70023512f96da2b8",
+            measurementId: "G-G73MHFD18Y"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore();
+        try {
+            const q = query(collection(db, "order_items"), orderBy("status", "desc"), orderBy("createdAt", "asc"));        
+            const querySnapshot = await getDocs(q); 
+            console.log(querySnapshot);           
+            var index = 0;
+            var currDate = new Date();
+            var currTime = currDate.getTime();
+            querySnapshot.forEach((doc) => {
+                var docData = doc.data();
+                var createTime = docData.createdAt.toDate().getTime();
+                index++;
+                var lDiv = "<tr><td scope='row'>" + docData.counter  + "</td>";
+                lDiv += "<td scope='row'>" + docData.item + "</td>";            
+                lDiv += "<td scope='row'>" + docData.tableId + "</td>";                   
+                if(docData.status === "Delivered"){       
+                    lDiv += "<td scope='row'> -- </td>";
+                    lDiv += "<td scope='row' style='color:green !important'>" + docData.status + "&nbsp;";  
+                    lDiv += "<i class='fas fa-check' style='color:green'></i>";
+                }else{       
+                    lDiv += "<td scope='row'>" + returnTime(currTime, createTime) + " minutes</td>";
+                    lDiv += "<td scope='row' style='color:red !important' class='blinkFast'>" + docData.status + "&nbsp;";  
+                    lDiv += "<i class='fas fa-bell blinkFast' style='color:red; font-size:12pt !important'></i>";
+                }
+                lDiv += "</td></tr>";                
+                $("#bodyOrder").append(lDiv);
+            });
+        } catch(error) {
+            console.log(error)
+        }
+
+        function returnTime(currTime, createTime){
+            var diff =(currTime - createTime) / 1000;
+            // Convert the difference from seconds to minutes
+            diff /= 60;
+            // Return the absolute value of the rounded difference in minutes
+            var pendingTime = Math.round(diff);
+            //pendingTime += "-" + diff % 60;
+            return pendingTime;
+        }
+
+        $(document).ready(function(){
+            //$('#tableOrder').dataTable();
+        });
+
+    </script>
+    <script>        
+        function onSearch() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("txtSearch");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("tableOrder");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[2];
+                console.log(td);
+                if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

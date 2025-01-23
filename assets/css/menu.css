@@ -222,7 +222,7 @@ legend{
 
 .blinkFast {
       animation: blink2 2s steps(5, start) infinite;
-      -webkit-animation: blink2 1s steps(5, start) infinite;
+      -webkit-animation: blink2 1s steps(2, start) infinite;
     }
 
 @keyframes blink2 {
