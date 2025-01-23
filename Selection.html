@@ -100,6 +100,7 @@
         const db = getFirestore();
 
         $('#btnOrder').click(function(){
+            console.log("------1---------")
             var tableId = $.urlParam('tableId');
             if(itemArr.length > 0){
                 if(tableId != null && tableId != undefined && tableId != ""){
@@ -159,7 +160,7 @@
         let itemArr = [];
         $(function () {
             $(".form-check input").change(function () {
-                const lMax = 5;
+                const lMax = 3;
                 let itemIds = [];
                 let itemTexts = [];
                 $("input:checkbox[name=chkMenu]:checked").each(function () {
@@ -188,9 +189,9 @@
             return Math.floor(Math.random() * 26) + Date.now();
         };
 
-        function getIP(json) {
-            console.log("My public IP address is: ", json.ip);
-        }
+        // function getIP(json) {
+        //     console.log("My public IP address is: ", json.ip);
+        // }
     </script>
 </body>
 </html>

@@ -19,13 +19,13 @@ var mocktailsbv = [{ "id": "mk1", "name": "Virgin Mojito", "icon": "virginmohito
     { "id": "mk10", "name": "Soft Drinks", "icon": "softdrinks.jpg" }];
 
 //CHAAT COUNTER
-var chat = [{ "id": "ch1", "name": "Delhi ka Golgappa vs Kolkata'r Fuchka vs Mumbaikar Panipuri", "icon": "golgoppa1.jpg" },
+var chat = [{ "id": "ch1", "name": "Kolkata'r Fuchka", "icon": "golgoppa1.jpg" },
     { "id": "ch2", "name": "Ranchi Aloo Tikki with Ghugni Matar", "icon": "alutikkighognimatar1.jpg" },
     { "id": "ch3", "name": "Delhi Ragra Chat with Kulcha", "icon": "dilliragrachaatkulcha1.jpg" },
-    { "id": "ch3", "name": "Jodhpur Bhalla Papri Chat", "icon": "bhallapaprichaat1.jpg" },
-    { "id": "ch4", "name": "Rajkot Cream Bhalla", "icon": "creambhalla1.jpg" },
-    { "id": "ch5", "name": "Indori Raj Kahori Chat", "icon": "rajkachorichat1.jpg" },
-    { "id": "ch6", "name": "Mumbai Bhel Chat", "icon": "indianbhelcha1.jpg" }];
+    { "id": "ch4", "name": "Jodhpur Bhalla Papri Chat", "icon": "bhallapaprichaat1.jpg" },
+    { "id": "ch5", "name": "Rajkot Cream Bhalla", "icon": "creambhalla1.jpg" },
+    { "id": "ch6", "name": "Indori Raj Kahori Chat", "icon": "rajkachorichat1.jpg" },
+    { "id": "ch7", "name": "Mumbai Bhel Chat", "icon": "indianbhelcha1.jpg" }];
 
 //STARTER VEG
 var starterVeg = [{ "id": "sv1", "name": "Paneer Kathi Roll", "icon": "paneerkatthitoll1.jpg" },
@@ -34,16 +34,16 @@ var starterVeg = [{ "id": "sv1", "name": "Paneer Kathi Roll", "icon": "paneerkat
     { "id": "sv4", "name": "Cheese Balls", "icon": "cheeseball1.jpg" },
     { "id": "sv5", "name": "Panskura Vegetable Chop", "icon": "vegetablechop1.jpg" },
     { "id": "sv6", "name": "Darjeeling Cheese Wonton", "icon": "cheesewonton1.jpg" },
-    { "id": "sv7", "name": "Paneer Tikka", "icon": "paneertikka1.jpg" },
-    { "id": "sv7", "name": "Paneer Chilli", "icon": "paneertikka1.jpg" },
-    { "id": "sv8", "name": "Veg Manchurian", "icon": "vegmanchurian.jpg" },
-    { "id": "sv9", "name": "Honey Chilli Potatoes", "icon": "honeychillipotates.jpg" },
-    { "id": "sv10", "name": "Crispy Fried Vegetables", "icon": "crispyfriedvegetables.png" },
-    { "id": "sv11", "name": "Sikkim Veg Hakka Noddles", "icon": "veghakkanoddles.jpg" },
-    { "id": "sv12", "name": "Bihar Special Litti Chokha", "icon": "littichokha.png" }];
+    { "id": "sv7", "name": "Bhatinda Paneer Tikka", "icon": "paneertikka1.jpg" },
+    { "id": "sv8", "name": "Paneer Chilli", "icon": "paneertikka1.jpg" },
+    { "id": "sv9", "name": "Veg Manchurian", "icon": "vegmanchurian.jpg" },
+    { "id": "sv10", "name": "Honey Chilli Potatoes", "icon": "honeychillipotates.jpg" },
+    { "id": "sv11", "name": "Crispy Fried Vegetables", "icon": "crispyfriedvegetables.png" },
+    { "id": "sv12", "name": "Sikkim Veg Hakka Noddles", "icon": "veghakkanoddles.jpg" },
+    { "id": "sv13", "name": "Bihar Special Litti Chokha", "icon": "littichokha.png" }];
 
 //STARTER NON-VEG
-var starterNonVeg = [{ "id": "snv1", "name": "Chilli Chicken", "icon": "chillichicken1.jpg" },
+var starterNonVeg = [{ "id": "snv1", "name": "Guwahati Chilli Chicken", "icon": "chillichicken1.jpg" },
     { "id": "snv2", "name": "Goan Herb Fried Prawns", "icon": "herbfriedprawns1.jpg" },
     { "id": "snv3", "name": "Lucknowi Mutton Galawti Kebab", "icon": "muttongelowtikebab1.jpg" },
     { "id": "snv4", "name": "Beer Batter Fried Fish", "icon": "beerbatterfriedfish1.jpg" },

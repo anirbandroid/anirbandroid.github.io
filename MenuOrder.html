@@ -28,8 +28,7 @@
                     <table class="table">
                         <thead>
                             <tr class="tableHeaderColor">
-                                <th scope='col' style="width:3%">#</th>
-                                <th scope='col' style="width:5%">Table</th>
+                                <th scope='col' style="width:8%">Table #</th>
                                 <th scope='col'>Items</th>
                                 <th scope='col' style="width:12%">Pneding Since</th>
                                 <th scope='col' style="width:10%">Status</th>
@@ -74,8 +73,7 @@
                 var docData = doc.data();
                 var createTime = docData.timestamp.toDate().getTime();
                 index++;
-                var lDiv = "<tr><th scope='row'>" + index + "</th>";
-                lDiv += "<th scope='row'>T - " + docData.table_id + "</th>";
+                var lDiv = "<tr><th scope='row'>T - " + docData.table_id + "</th>";
                 lDiv += "<th scope='row'>" + docData.items + "</th>";                   
                 if(docData.status === "Delivered"){       
                     lDiv += "<th scope='row'> -- </th>";

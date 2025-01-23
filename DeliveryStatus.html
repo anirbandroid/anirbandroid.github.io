@@ -83,13 +83,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore();
         try {
-            // const docRef = doc(db, "orders", "AIpXtsVGDBJHK2ZnKJUD");
-            // const docSnap = await getDoc(docRef);
-            // if(docSnap.exists()) {
-            //     //console.log(docSnap.data());
-            // } else {
-            //     console.log("Document does not exist")
-            // }
             const q = query(collection(db, "orders"), where("status", "==", "Ordered"));        
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
@@ -157,11 +150,11 @@
                 var lDiv = "<div class='row'><div class='col-md-1 col-sm-1 col-xs-1'></div>";
                 for (var j = 0; j < lMaxTable; j++) {
                     lTableNo += 1;
-                    lDiv += "<div class='col-md-2 col-sm-1 col-xs-1 text-center tableDivStyle' id='" + lTableNo + "'>";
+                    lDiv += "<div class='col-md-2 col-sm-2 col-xs-2 text-center tableDivStyle' id='" + lTableNo + "'>";
                     lDiv += "<i id='I" + lTableNo + "' class='fa fa-utensils' style='color: #942de9; font-size:24pt'></i><br />";
-                    lDiv += "<p class='tableTxtStyle'>T - " + lTableNo.toString() + "</p></div>";
+                    lDiv += "<p class='tableTxtStyle'>" + lTableNo.toString() + "</p></div>";
                 }
-                lDiv += "</div>";
+                lDiv += "<div class='col-md-1 col-sm-1 col-xs-1'></div></div>";
                 lDiv += "<div class='row'><div class='col-md-12'><hr class='hrStyleLine'></div></div>";
                 $("#divTable").append(lDiv);
             }
