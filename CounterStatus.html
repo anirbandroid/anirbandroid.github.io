@@ -135,10 +135,6 @@
                     updatedAt: Timestamp.fromDate(new Date())
                 });
                 setTimeout(location.reload(), 5000);
-                //location.reload();
-                // clearModal();
-                // var docData = docSnap.data();            
-                // getOrderByCounterID(docSnap.table_id);
             }
         });  
 
@@ -152,14 +148,14 @@
     </script>
     <script>
         function createCounters() {
-            let lMaxCounter = counters.length/2;
-            let lMaxRows = 2;
+            let lMaxCounter = counters.length/4;
+            let lMaxRows = 4;
             var lCounterNo = 0;
             for (var i = 1; i <= lMaxRows; i++) {
                 var lDiv = "<div class='row'><div class='col-md-2 col-sm-2 col-xs-2'></div>";
                 for (var j = 0; j < lMaxCounter; j++) {
                     var currCounter = counters[lCounterNo];
-                    lDiv += "<div class='col-md-2 col-sm-2 col-xs-2 text-center tableDivStyle' id='" + currCounter.id + "'>";
+                    lDiv += "<div class='col-md-4 col-sm-4 col-xs-4 text-center tableDivStyle' id='" + currCounter.id + "'>";
                     lDiv += "<i id='C" + currCounter.id + "' class='fa fa-utensils' style='color: #942de9; font-size:24pt'></i><br />";
                     lDiv += "<p class='tableTxtStyle'>" + currCounter.name.toString() + "</p></div>";
                     lCounterNo ++;
