@@ -71,6 +71,7 @@ legend{
     cursor:pointer;
     background-color: #5763e9;
     color:#fff;
+    display: none;
 }
 
 .btnOrder:hover{
